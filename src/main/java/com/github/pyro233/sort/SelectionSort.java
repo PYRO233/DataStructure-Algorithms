@@ -1,8 +1,39 @@
 package com.github.pyro233.sort;
 
-public class SelectionSort extends AbstractSort{
+public class SelectionSort extends AbstractSort {
 
     static <T extends Comparable<T>> void sort(T[] arr) {
+        int left = 0, right = arr.length - 1;
+        while (left < right) {
+            // 记录最大最小值的指针
+            int minIndex = left;
+            int maxIndex = right;
+
+            // 在每一轮查找时, 要保证arr[minIndex] <= arr[maxIndex]
+            if (arr[minIndex].compareTo(arr[maxIndex]) > 0) {
+                swap(arr, minIndex, maxIndex);
+            }
+            for (int i = left + 1; i < right; i++) {
+                if (arr[i].compareTo(arr[minIndex]) < 0) {
+                    // 1. 先标记
+                    minIndex = i;
+                } else if (arr[i].compareTo(arr[maxIndex]) > 0) {
+                    maxIndex = i;
+                }
+            }
+            // 2. 再swap，减少swap次数
+            swap(arr, left, minIndex);
+            swap(arr, right, maxIndex);
+            left++;
+            right--;
+        }
+    }
+
+    /**
+     * 每次找最小的放到应属的位置
+     * 每次寻找[i,n)内的最小值，交换i和最小值
+     */
+    static <T extends Comparable<T>> void sortUseMin(T[] arr) {
 
         int n = arr.length;
         for (int i = 0; i < n; i++) {
@@ -16,5 +47,4 @@ public class SelectionSort extends AbstractSort{
             swap(arr, i, minIndex);
         }
     }
-
 }
